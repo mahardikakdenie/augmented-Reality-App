@@ -1,98 +1,133 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
+import { ScrollView, StyleSheet } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+	return (
+		<ScrollView
+			contentContainerStyle={styles.container}
+			showsVerticalScrollIndicator={false}>
+			{/* Header */}
+			<ThemedView style={styles.header}>
+				<ThemedText type='title' style={styles.heroTitle}>
+					Smart Packaging Scanner
+				</ThemedText>
+				<ThemedText style={styles.heroSubtitle}>
+					Scan. Analyze. Verify.
+				</ThemedText>
+			</ThemedView>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+			{/* Feature List */}
+			<ThemedView style={styles.section}>
+				<ThemedText type='subtitle' style={styles.sectionTitle}>
+					Point your camera at any product packaging to:
+				</ThemedText>
+				{[
+					'Generate a 3D preview from the 2D image',
+					'Get AI-powered compliance analysis based on Indonesian National Standards (SNI)',
+					'Receive instant feedback on missing labels, safety risks, or regulatory gaps',
+				].map((item, i) => (
+					<ThemedText key={i} style={styles.featureItem}>
+						• {item}
+					</ThemedText>
+				))}
+			</ThemedView>
+
+			{/* CTA Button */}
+			<ThemedView style={styles.ctaSection}>
+				<Link href='/' asChild>
+					<ThemedText style={styles.scanButton}>
+						Scan Packaging with AR
+					</ThemedText>
+				</Link>
+			</ThemedView>
+
+			{/* How It Works */}
+			<ThemedView style={styles.section}>
+				<ThemedText type='subtitle' style={styles.sectionTitle}>
+					How it works
+				</ThemedText>
+				<ThemedText style={styles.sectionDescription}>
+					Your scan is processed securely:
+				</ThemedText>
+				{[
+					'Text extraction happens on-device (privacy-first)',
+					'3D model generated via Replicate AI',
+					'SNI compliance evaluated by top-tier LLMs via OpenRouter',
+				].map((item, i) => (
+					<ThemedText key={i} style={styles.featureItem}>
+						• {item}
+					</ThemedText>
+				))}
+			</ThemedView>
+		</ScrollView>
+	);
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+	container: {
+		flexGrow: 1,
+		padding: 24,
+		paddingTop: 40,
+	},
+	header: {
+		alignItems: 'center',
+		marginBottom: 32,
+		paddingHorizontal: 8,
+	},
+	heroTitle: {
+		fontSize: 32,
+		fontWeight: '800',
+		textAlign: 'center',
+		lineHeight: 38,
+		letterSpacing: -0.5,
+	},
+	heroSubtitle: {
+		fontSize: 20,
+		fontWeight: '600',
+		textAlign: 'center',
+		marginTop: 8,
+		opacity: 0.9,
+	},
+	section: {
+		marginBottom: 32,
+	},
+	sectionTitle: {
+		fontSize: 22,
+		fontWeight: '700',
+		marginBottom: 12,
+	},
+	sectionDescription: {
+		marginBottom: 12,
+		opacity: 0.9,
+	},
+	featureItem: {
+		paddingLeft: 18,
+		lineHeight: 26,
+		fontSize: 16,
+		marginBottom: 6,
+	},
+	ctaSection: {
+		alignItems: 'center',
+		marginBottom: 32,
+	},
+	scanButton: {
+		backgroundColor: '#007AFF',
+		color: '#FFFFFF',
+		fontSize: 18,
+		fontWeight: '700',
+		paddingHorizontal: 32,
+		paddingVertical: 16,
+		borderRadius: 16,
+		textAlign: 'center',
+		minWidth: 240,
+		// Shadow for depth (iOS & Android)
+		shadowColor: '#007AFF',
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.2,
+		shadowRadius: 8,
+		elevation: 4,
+	},
 });
